@@ -1,0 +1,66 @@
+---
+title: "Spiral Plot"
+output: html_notebook
+---
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(ggforce)
+install.packages("spiralize")
+library("spiralize")
+
+```
+
+Se toma como referencia el tutorial del siguiente enlace: 
+
+https://flowingdata.com/2022/01/10/a-quick-and-easy-way-to-make-spiral-charts-in-r/
+
+```{r}
+covid <- read.csv("owid-covid-data.csv", stringsAsFactors = FALSE)
+```
+
+
+```{r}
+new_cases_spain <- covid[covid$location == "Spain" & !is.na(covid$new_cases_smoothed),]
+new_cases_spain$dt <- strptime(new_cases_spain$date, format="%Y-%m-%d")
+ymax <- max(new_cases_spain$new_cases_smoothed)
+
+# Initialize.
+spiral_initialize_by_time(xlim=c("2020-01-01 00:00:00", "2023-04-26 00:00:00"),
+                          unit_on_axis = "days", period="years",
+                          start=90, end=(709/365)*360+(28/365)*360+90,
+                          flip="horizontal",verbose = FALSE)
+
+
+# Create the track.
+spiral_track(ylim=c(0, ymax*.7),
+             background=FALSE, background_gp = gpar(col = NA, fill = NA))
+
+
+# Use a polygon.
+spiral_polygon(x=c(new_cases_spain$dt, rev(new_cases_spain$dt)),
+               y=c(new_cases_spain$new_cases_smoothed/2, -rev(new_cases_spain$new_cases_smoothed/2)),
+               gp = gpar(col="#d32e2b", fill="#d32e2b50"))
+
+# Middle baseline.
+spiral_lines(x=new_cases_spain$dt, y=0)
+
+# Text.
+spiral_text(x="2020-01-01", y=50000, text="2020",
+            facing = "curved_inside", just = "right",
+            gp=gpar(cex=1, fontfamily="Courier"))
+spiral_text(x="2021-01-01", y=50000, text="2021",
+            facing = "curved_inside", just = "right",
+            gp=gpar(cex=1, fontfamily="Courier"))
+spiral_text(x="2022-01-01", y=50000, text="2022",
+            facing = "curved_inside", just = "right",
+            gp=gpar(cex=1, fontfamily="Courier"))
+spiral_text(x="2023-01-01", y=50000, text="2023",
+            facing = "curved_inside", just = "right",
+            gp=gpar(cex=1, fontfamily="Courier"))
+
+
+```
+
