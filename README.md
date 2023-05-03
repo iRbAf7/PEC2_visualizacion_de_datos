@@ -10,6 +10,6 @@ Para esta gráfica se ha usado el siguiente dataset: https://www.kaggle.com/data
 
 Para este diagrama se ha usado el siguiente dataset: https://www.kaggle.com/datasets/uciml/autompg-dataset
 
-3 - La Gráfica en esprial se hecho en R, se ha subido en un archivo html.
+3 - La Gráfica en esprial se hecho en R, se ha subido el codigo en R y un archivo pdf.
 
 Para esta gráfica se ha usado el dataset owid-covid-data.csv, del siguiente repositorio: https://github.com/owid/covid-19-data/tree/master/public/data
